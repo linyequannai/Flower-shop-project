@@ -85,7 +85,7 @@ CREATE TABLE cart_item (
 -- 5. 订单主表
 -- ============================================
 CREATE TABLE `order` (
-    id BIGINT PRIMARY KEY COMMENT '雪花ID',
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     order_no VARCHAR(32) NOT NULL UNIQUE COMMENT '订单号',
     user_id BIGINT NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL COMMENT '商品总价',
@@ -192,8 +192,8 @@ CREATE TABLE user_coupon (
 
 -- 管理员 (密码 admin123 的 BCrypt 哈希)
 INSERT INTO user (username, password, nickname, role, status) VALUES
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', '系统管理员', 1, 1),
-('testuser', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5Eh', '测试用户', 0, 1);
+('admin', '$2b$10$r3ygBFDgXl1Ooy0Bm4RkwuB/hhZdJy3tnBlpVZcoahJ040q0zt5tm', '系统管理员', 1, 1),
+('testuser', '$2b$10$r3ygBFDgXl1Ooy0Bm4RkwuB/hhZdJy3tnBlpVZcoahJ040q0zt5tm', '测试用户', 0, 1);
 
 -- 分类
 INSERT INTO category (name, description, sort_order) VALUES

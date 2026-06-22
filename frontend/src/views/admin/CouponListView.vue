@@ -3,7 +3,7 @@
     <h2>优惠券管理</h2>
     <el-button type="primary" style="margin-bottom:16px" @click="openDialog()">新增优惠券</el-button>
     <el-table :data="coupons" v-loading="loading">
-      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column type="index" label="#" width="50" />
       <el-table-column prop="name" label="名称" />
       <el-table-column label="类型" width="80">
         <template #default="{ row }">{{ row.typeText }}</template>

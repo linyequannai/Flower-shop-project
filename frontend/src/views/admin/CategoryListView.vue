@@ -3,7 +3,7 @@
     <h2>分类管理</h2>
     <el-button type="primary" style="margin-bottom:16px" @click="openDialog()">新增分类</el-button>
     <el-table :data="categories" v-loading="loading">
-      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column type="index" label="#" width="50" />
       <el-table-column prop="name" label="名称" />
       <el-table-column prop="description" label="描述" />
       <el-table-column prop="sortOrder" label="排序" width="80" />

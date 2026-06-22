@@ -12,6 +12,9 @@
         <el-form-item prop="nickname">
           <el-input v-model="form.nickname" placeholder="昵称（选填）" />
         </el-form-item>
+        <el-form-item prop="phone">
+          <el-input v-model="form.phone" placeholder="手机号（选填）" />
+        </el-form-item>
         <el-form-item prop="email">
           <el-input v-model="form.email" placeholder="邮箱（选填）" />
         </el-form-item>
@@ -35,10 +38,13 @@ const authStore = useAuthStore()
 const formRef = ref(null)
 const loading = ref(false)
 
-const form = reactive({ username: '', password: '', nickname: '', email: '' })
+const phoneRule = { pattern: /^$|^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
+
+const form = reactive({ username: '', password: '', nickname: '', email: '', phone: '' })
 const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, message: '密码至少6位', trigger: 'blur' }],
+  phone: [phoneRule],
 }
 
 async function handleRegister() {
@@ -51,6 +57,7 @@ async function handleRegister() {
       password: form.password,
       nickname: form.nickname,
       email: form.email,
+      phone: form.phone,
     })
     ElMessage.success('注册成功，请登录')
     router.push('/login')

@@ -13,7 +13,7 @@
           <el-table-column label="商品信息" width="400">
             <template #default="{ row }">
               <div style="display:flex;align-items:center;gap:12px">
-                <img :src="row.flowerImage" style="width:60px;height:60px;object-fit:cover;border-radius:4px" />
+                <img :src="row.flowerImage" style="width:60px;height:60px;object-fit:cover;border-radius:4px" @error="e => e.target.src='data:image/svg+xml,' + encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%23fce4ec%22 width=%22100%22 height=%22100%22/><text fill=%22%23e74c8b%22 font-size=%2230%22 text-anchor=%22middle%22 dy=%22.35em%22 x=%2250%22 y=%2250%22>🌸</text></svg>')" />
                 <span>{{ row.flowerName }}</span>
               </div>
             </template>

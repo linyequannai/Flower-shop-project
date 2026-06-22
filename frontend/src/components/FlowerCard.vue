@@ -1,7 +1,7 @@
 <template>
   <router-link :to="'/flowers/' + flower.id" class="flower-card">
     <div class="card-img">
-      <img :src="flower.coverImage || '/placeholder.jpg'" :alt="flower.name" />
+      <img :src="flower.coverImage" :alt="flower.name" @error="e => e.target.src='data:image/svg+xml,' + encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%23fce4ec%22 width=%22220%22 height=%22220%22/><text fill=%22%23e74c8b%22 font-size=%2260%22 text-anchor=%22middle%22 dy=%22.35em%22 x=%22110%22 y=%22110%22>🌸</text></svg>')" />
     </div>
     <div class="card-info">
       <h3 class="card-name">{{ flower.name }}</h3>

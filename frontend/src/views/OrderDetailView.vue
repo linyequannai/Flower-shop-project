@@ -17,18 +17,20 @@
           </p>
           <p style="font-size:18px;color:#e74c8b;font-weight:bold">实付：¥{{ order.payAmount }}</p>
         </el-card>
-        <el-card>
+        <el-card v-if="order">
           <template #header>商品清单</template>
+          <el-empty v-if="!order.items || order.items.length === 0" description="暂无商品明细" />
           <div v-for="item in order.items" :key="item.id" class="item-row">
-            <img :src="item.flowerImage" />
+            <img :src="item.flowerImage" @error="e => e.target.src='data:image/svg+xml,' + encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%23fce4ec%22 width=%22100%22 height=%22100%22/><text fill=%22%23e74c8b%22 font-size=%2230%22 text-anchor=%22middle%22 dy=%22.35em%22 x=%2250%22 y=%2250%22>🌸</text></svg>')" />
             <span>{{ item.flowerName }}</span>
             <span>¥{{ item.price }} x {{ item.quantity }}</span>
             <span>¥{{ item.subtotal }}</span>
           </div>
         </el-card>
+        <el-empty v-if="!loading && !order" description="订单不存在" />
         <div style="text-align:center;margin-top:20px">
-          <el-button v-if="order.status === 0" type="danger" @click="cancel">取消订单</el-button>
-          <el-button v-if="order.status === 2" type="success" @click="confirm">确认收货</el-button>
+          <el-button v-if="order && order.status === 0" type="danger" @click="cancel">取消订单</el-button>
+          <el-button v-if="order && order.status === 2" type="success" @click="confirm">确认收货</el-button>
         </div>
       </div>
     </div>
@@ -52,7 +54,15 @@ const loading = ref(false)
 
 onMounted(async () => {
   loading.value = true
-  try { order.value = await getOrderDetail(route.params.id) } finally { loading.value = false }
+  try {
+    order.value = await getOrderDetail(route.params.id)
+    console.log('Order detail:', order.value)
+  } catch (e) {
+    console.error('Failed to load order:', e)
+    ElMessage.error('订单加载失败')
+  } finally {
+    loading.value = false
+  }
 })
 
 async function cancel() {

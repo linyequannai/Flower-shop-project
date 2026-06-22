@@ -4,7 +4,7 @@
     <div class="page-container" v-loading="loading">
       <div v-if="flower" class="detail">
         <div class="detail-image">
-          <img :src="flower.coverImage || '/placeholder.jpg'" :alt="flower.name" />
+          <img :src="flower.coverImage" :alt="flower.name" @error="e => e.target.src='data:image/svg+xml,' + encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22450%22 height=%22450%22><rect fill=%22%23fce4ec%22 width=%22450%22 height=%22450%22/><text fill=%22%23e74c8b%22 font-size=%22100%22 text-anchor=%22middle%22 dy=%22.35em%22 x=%22225%22 y=%22225%22>🌸</text></svg>')" />
         </div>
         <div class="detail-info">
           <h1>{{ flower.name }}</h1>

@@ -36,6 +36,12 @@ Thumbs.db
 Desktop.ini
 
 # ========================================
-# Uploads (运行时上传的图片)
+# Sensitive Config
 # ========================================
-uploads/
+application.yml
+.env
+
+# ========================================
+# Claude Code local settings
+# ========================================
+.claude/

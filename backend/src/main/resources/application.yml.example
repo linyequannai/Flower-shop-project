@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/flower_shop?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: your_username
+    password: your_password
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+  mapper-locations: classpath:mapper/*.xml
+
+app:
+  jwt:
+    secret: Rmxvd2VyU2hvcFNlY3JldEtleUZvckpXVDIwMjZTaWduaW5nS2V5VmVyeUxvbmc=
+    expiration: 86400000
+  upload:
+    path: ./uploads
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

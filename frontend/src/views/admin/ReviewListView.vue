@@ -2,7 +2,7 @@
   <div>
     <h2>评价管理</h2>
     <el-table :data="reviews" v-loading="loading">
-      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column type="index" label="#" width="50" />
       <el-table-column prop="username" label="用户" width="100" />
       <el-table-column prop="rating" label="评分" width="150">
         <template #default="{ row }"><el-rate :model-value="row.rating" disabled size="small" /></template>

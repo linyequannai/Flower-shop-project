@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -26,18 +27,18 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public Result<Object> listByUser(@CurrentUser Long userId,
-                                     @RequestParam(defaultValue = "1") int page,
-                                     @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(required = false) Integer status) {
+    public Result<Map<String, Object>> listByUser(@CurrentUser Long userId,
+                                                   @RequestParam(defaultValue = "1") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(required = false) Integer status) {
         Page<OrderVO> result = orderService.pageByUser(userId, page, size, status);
-        return Result.ok(new java.util.HashMap<String, Object>() {{
-            put("total", result.getTotal());
-            put("pages", result.getPages());
-            put("current", result.getCurrent());
-            put("size", result.getSize());
-            put("records", result.getRecords());
-        }});
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", result.getTotal());
+        map.put("pages", result.getPages());
+        map.put("current", result.getCurrent());
+        map.put("size", result.getSize());
+        map.put("records", result.getRecords());
+        return Result.ok(map);
     }
 
     @GetMapping("/orders/{id}")
@@ -59,17 +60,17 @@ public class OrderController {
 
     @GetMapping("/admin/orders")
     @PreAuthorize("hasRole('ADMIN')")
-    public Result<Object> listAll(@RequestParam(defaultValue = "1") int page,
-                                  @RequestParam(defaultValue = "10") int size,
-                                  @RequestParam(required = false) Integer status) {
+    public Result<Map<String, Object>> listAll(@RequestParam(defaultValue = "1") int page,
+                                                @RequestParam(defaultValue = "10") int size,
+                                                @RequestParam(required = false) Integer status) {
         Page<OrderVO> result = orderService.pageAll(page, size, status);
-        return Result.ok(new java.util.HashMap<String, Object>() {{
-            put("total", result.getTotal());
-            put("pages", result.getPages());
-            put("current", result.getCurrent());
-            put("size", result.getSize());
-            put("records", result.getRecords());
-        }});
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", result.getTotal());
+        map.put("pages", result.getPages());
+        map.put("current", result.getCurrent());
+        map.put("size", result.getSize());
+        map.put("records", result.getRecords());
+        return Result.ok(map);
     }
 
     @PutMapping("/admin/orders/{id}/status")

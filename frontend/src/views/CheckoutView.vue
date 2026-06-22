@@ -22,7 +22,7 @@
       <el-card style="margin-bottom:20px">
         <template #header>商品清单</template>
         <div v-for="item in cart.selectedItems" :key="item.id" class="checkout-item">
-          <img :src="item.flowerImage" />
+          <img :src="item.flowerImage" @error="e => e.target.src='data:image/svg+xml,' + encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22><rect fill=%22%23fce4ec%22 width=%22100%22 height=%22100%22/><text fill=%22%23e74c8b%22 font-size=%2230%22 text-anchor=%22middle%22 dy=%22.35em%22 x=%2250%22 y=%2250%22>🌸</text></svg>')" />
           <span>{{ item.flowerName }}</span>
           <span>x{{ item.quantity }}</span>
           <span>¥{{ (item.price * item.quantity).toFixed(2) }}</span>
@@ -70,7 +70,10 @@ const form = reactive({
 
 const rules = {
   receiverName: [{ required: true, message: '请输入收货人', trigger: 'blur' }],
-  receiverPhone: [{ required: true, message: '请输入联系电话', trigger: 'blur' }],
+  receiverPhone: [
+    { required: true, message: '请输入联系电话', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' },
+  ],
   receiverAddress: [{ required: true, message: '请输入收货地址', trigger: 'blur' }],
 }
 

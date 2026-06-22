@@ -40,7 +40,12 @@ public class FileServiceImpl implements FileService {
             }
             String newFilename = "flower-images/" + UUID.randomUUID() + extension;
 
-            Path targetPath = Paths.get(uploadPath, newFilename);
+            // 解析为相对于 user.dir 的绝对路径，避免 Tomcat 临时目录问题
+            Path basePath = Paths.get(uploadPath);
+            if (!basePath.isAbsolute()) {
+                basePath = Paths.get(System.getProperty("user.dir"), uploadPath);
+            }
+            Path targetPath = basePath.resolve(newFilename);
             Files.createDirectories(targetPath.getParent());
             file.transferTo(targetPath.toFile());
 

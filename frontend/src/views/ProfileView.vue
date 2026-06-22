@@ -4,7 +4,7 @@
     <div class="page-container" style="max-width:600px">
       <h1 class="page-title">个人资料</h1>
       <el-card>
-        <el-form :model="form" label-width="100px">
+        <el-form :model="form" :rules="rules" label-width="100px">
           <el-form-item label="用户名"><el-input v-model="user.username" disabled /></el-form-item>
           <el-form-item label="昵称"><el-input v-model="form.nickname" /></el-form-item>
           <el-form-item label="邮箱"><el-input v-model="form.email" /></el-form-item>
@@ -36,6 +36,9 @@ import { updateProfile, updatePassword } from '../api/user'
 const auth = useAuthStore()
 const user = ref({})
 const form = reactive({ nickname: '', email: '', phone: '' })
+const rules = {
+  phone: [{ pattern: /^$|^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }],
+}
 const pwdForm = reactive({ oldPassword: '', newPassword: '' })
 const saving = ref(false)
 const savingPwd = ref(false)

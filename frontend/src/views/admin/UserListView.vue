@@ -2,7 +2,7 @@
   <div>
     <h2>用户管理</h2>
     <el-table :data="users" v-loading="loading">
-      <el-table-column prop="id" label="ID" width="60" />
+      <el-table-column type="index" label="#" width="50" />
       <el-table-column prop="username" label="用户名" />
       <el-table-column prop="nickname" label="昵称" />
       <el-table-column prop="email" label="邮箱" />
