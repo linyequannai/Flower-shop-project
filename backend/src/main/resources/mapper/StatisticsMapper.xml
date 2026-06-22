@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flowershop.module.statistics.mapper.StatisticsMapper">
+
+    <!-- 仪表盘概览 -->
+    <select id="selectDashboard" resultType="com.flowershop.module.statistics.dto.DashboardVO">
+        SELECT
+            COALESCE(SUM(CASE WHEN o.status IN (1,2,3) THEN o.pay_amount ELSE 0 END), 0) AS totalRevenue,
+            COUNT(*) AS orderCount,
+            (SELECT COUNT(*) FROM user) AS userCount,
+            (SELECT COUNT(*) FROM flower WHERE status = 1) AS flowerCount,
+            COUNT(CASE WHEN DATE(o.created_at) = CURDATE() THEN 1 END) AS todayOrderCount,
+            COALESCE(SUM(CASE WHEN DATE(o.created_at) = CURDATE() AND o.status IN (1,2,3) THEN o.pay_amount ELSE 0 END), 0) AS todayRevenue
+        FROM `order` o
+    </select>
+
+    <!-- 销售趋势 -->
+    <select id="selectSalesTrend" resultType="com.flowershop.module.statistics.dto.SalesTrendVO">
+        SELECT
+            DATE_FORMAT(o.created_at, #{groupFormat}) AS date,
+            COALESCE(SUM(o.pay_amount), 0) AS amount,
+            COUNT(*) AS orderCount
+        FROM `order` o
+        WHERE o.status IN (1, 2, 3)
+        GROUP BY DATE_FORMAT(o.created_at, #{groupFormat})
+        ORDER BY date DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 分类销售 -->
+    <select id="selectCategorySales" resultType="com.flowershop.module.statistics.dto.CategorySalesVO">
+        SELECT
+            c.id AS categoryId,
+            c.name AS categoryName,
+            COALESCE(SUM(oi.subtotal), 0) AS amount,
+            COUNT(DISTINCT o.id) AS orderCount
+        FROM order_item oi
+        JOIN `order` o ON oi.order_id = o.id AND o.status IN (1, 2, 3)
+        JOIN flower f ON oi.flower_id = f.id
+        JOIN category c ON f.category_id = c.id
+        GROUP BY c.id, c.name
+        ORDER BY amount DESC
+    </select>
+
+    <!-- 畅销花卉 -->
+    <select id="selectTopFlowers" resultType="com.flowershop.module.statistics.dto.SalesTrendVO">
+        SELECT
+            f.name AS date,
+            CAST(f.sales AS DECIMAL(10,2)) AS amount,
+            CAST(f.sales AS SIGNED) AS orderCount
+        FROM flower f
+        WHERE f.status = 1
+        ORDER BY f.sales DESC
+        LIMIT #{limit}
+    </select>
+
+</mapper>
